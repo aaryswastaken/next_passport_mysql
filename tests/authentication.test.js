@@ -1,6 +1,6 @@
-import { createUser, getUser, deleteUser, validatePassword, conn } from "../lib/user.js"
+import { createUser, getUser, deleteUser, validatePassword } from "../lib/user.js"
+import compose from "docker-compose"
 import mysql from "mysql";
-
 
 // THIS IS A DIRTY WAY TO SAVE AND RESTORE THE DB
 
@@ -9,7 +9,7 @@ var tablesToClean = [
 ]
 var dump = {};
 
-beforeAll((done) => {
+/* beforeAll((done) => {
     let n = 0;
 
     tablesToClean.forEach((tableName) => {
@@ -37,12 +37,51 @@ afterAll(() => {
             conn.query(`INSERT INTO ${tableName} SET ?`, row)
         })
     });
+}) */
+
+
+// Implement test server
+beforeAll((done) => {
+    // if(conn !== undefined) {
+    //     conn.end();
+    //     delete global.conn
+    // }
+    delete global.conn
+    global.conn = mysql.createConnection({
+        host: "127.0.0.1",
+        user: "root",
+        password: "root",
+        port: 3307,
+        database: "next"
+    });
+
+    conn.connect();
+
+    done();
+})
+
+describe("DB test", () => {
+    it("Connection is up", (done) => {
+        setTimeout(() => {
+            expect(conn.state).toBe("authenticated");
+            done();
+        }, 250)
+    });
+
+    it("Query is working", (done) => {
+        conn.query("SELECT 1+1", (err, results, fields) => {
+            expect(err).toBeNull();
+            expect(results).toHaveLength(1);
+            // expect(results[0]).toBe(2);
+            done();
+        })
+    })
 })
 
 describe("user.js", () => {
     it("Table is clean", (done) => {
-        conn.query("SELECT * FROM user", (err, result, fields) => {
-            expect(result).toHaveLength(0);
+        conn.query("SELECT * FROM user", (err, results, fields) => {
+            expect(results).toHaveLength(0);
             expect(err).toBeNull();
             done();
         })
@@ -53,8 +92,9 @@ describe("user.js", () => {
             username: "test",
             password: "password"
         }).then((r) => {
-            conn.query("SELECT * FROM user", (err, result, fields) => {
-                expect(result).toHaveLength(1);
+            console.log(r)
+            conn.query("SELECT * FROM user", (err, results, fields) => {
+                expect(results).toHaveLength(1);
                 expect(err).toBeNull();
                 done();
             });

@@ -1,6 +1,5 @@
 {
   "name": "with-passport",
-  "type": "module",
   "scripts": {
     "dev": "next",
     "build": "next build",
@@ -10,22 +9,24 @@
   "dependencies": {
     "@hapi/iron": "6.0.0",
     "cookie": "0.4.1",
+    "express": "^4.17.1",
+    "jest": "^26.6.3",
+    "mysql": "2.18.1",
     "next": "latest",
     "next-connect": "0.8.1",
+    "node-php-password": "0.1.2",
     "passport": "0.4.1",
     "passport-local": "1.0.0",
     "react": "latest",
     "react-dom": "latest",
     "swr": "0.3.0",
-    "uuid": "8.3.1",
-    "mysql": "2.18.1",
-    "node-php-password": "0.1.2",
-    "jest": "^26.6.3"
+    "uuid": "8.3.1"
   },
   "license": "MIT",
   "devDependencies": {
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
-    "jest-mysql": "^1.1.4"
+    "jest-mysql": "^1.1.4",
+    "docker-compose": "^0.23.6"
   }
 }
