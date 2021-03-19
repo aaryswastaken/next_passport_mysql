@@ -1,0 +1,14 @@
+{
+  "name": "db",
+  "version": "1.0.0",
+  "description": "",
+  "main": "init_db.js",
+  "scripts": {
+    "deploy": "node init_db.js"
+  },
+  "dependencies": {
+    "mysql": "^2.18.1"
+  },
+  "author": "",
+  "license": "ISC"
+}
